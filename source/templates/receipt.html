@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Configuración del documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo</title>
+    <!-- Enlace a la hoja de estilo externa -->
+    <link rel="stylesheet" media="all" href="{{url_for('static', filename='css/style_receipt.css')}}" type="text/css"
+        media="all" />
+    <!-- Enlace a Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <!-- Encabezado -->
+    <div id="display">
+        <!-- Tu contenido aquí -->
+        <div>
+            <div class="py-4">
+                <div class="px-14 py-6">
+                    <!-- Tabla del encabezado -->
+                    <table class="w-full border-collapse border-spacing-0">
+                        <tbody>
+                            <tr>
+                                <!-- Logo y datos de la empresa -->
+                                <td class="w-full align-top">
+                                    <table>
+                                        <tbody>
+                                            <td>
+                                                <img src="https://i.pinimg.com/originals/dc/b2/07/dcb207eb426cc71bc80862e7dd2c0d71.jpg"
+                                                    width="150px" style="border-radius: 12px; height: 100px;" />
+                                            </td>
+                                            <td class="pl-4 pt-4">
+                                                <h1 class="whitespace-nowrap font-bold text-main text-left"
+                                                    style="font-size: 22px;">
+                                                    CONSTRUCCIONES ESCARREGA
+                                                </h1>
+                                                <p class="whitespace-nowrap text-slate-400 text-left">
+                                                    Dina Gisela Chang Escárrega, Deveza 1229, <br>
+                                                    Residencial Barcelona, Mexicali B. C. <br>
+                                                    CP 21323, 686 178 5949
+                                                </p>
+                                            </td>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <!-- Detalles de la factura -->
+                                <td class="align-top">
+                                    <div class="text-sm">
+                                        <table class="border-collapse border-spacing-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="border-r pr-4">
+                                                        <div>
+                                                            <p class="whitespace-nowrap text-slate-400 text-right">Fecha
+                                                            </p>
+                                                            <p class="whitespace-nowrap font-bold text-main text-right">
+                                                                {{ datos_recibidos.fecha }}</p>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl-4">
+                                                        <div>
+                                                            <p class="whitespace-nowrap text-slate-400 text-right">Folio
+                                                                #
+                                                            </p>
+                                                            <p class="whitespace-nowrap font-bold text-main text-right">
+                                                                {{folio}}</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Información de envío y recepción -->
+                <div class="bg-slate-100 px-14 py-6 text-sm">
+                    <table class="w-full border-collapse border-spacing-0">
+                        <tbody>
+                            <tr>
+                                <!-- Información del receptor -->
+                                <td class="w-1/2 align-top">
+                                    <div class="text-sm text-neutral-600">
+                                        <p class="font-bold" style="color: #5c6ac4">
+                                            Recibe
+                                        </p>
+                                        <p>
+                                            <strong>
+                                                {{ datos_recibidos.recibe }}
+                                            </strong>
+                                        </p>
+                                        <p>
+                                            Deveza 1229, Residencial Barcelona, <br>
+                                            Mexicali B. C.CP 21323, <br>
+                                            686 178 5949
+                                        </p>
+                                    </div>
+                                </td>
+                                <!-- Información del remitente -->
+                                <td class="w-1/2 align-top text-right">
+                                    <div class="text-sm text-neutral-600">
+                                        <p class="font-bold" style="color: #5c6ac4;">
+                                            Recibí de:
+                                        </p>
+                                        <p>
+                                            <strong>
+                                                {{ datos_recibidos.recibido_de }}
+                                            </strong>
+                                        </p>
+                                        <p>
+                                            {{ datos_recibidos.direccion }}
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Detalles de la factura -->
+                <div class="px-14 py-10 text-sm text-neutral-700">
+                    <table class="w-full border-collapse border-spacing-0">
+                        <thead>
+                            <tr>
+                                <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">#</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Descripción</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Precio</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">Cant.</td>
+                                <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">Descuento
+                                </td>
+                                <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Subtotal
+                                </td>
+                                <td class="border-b-2 border-main pb-3 pl-2 pr-3 text-right font-bold text-main">
+                                    Subtotal -
+                                    Desc.</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Detalles de productos -->
+                            {% for producto in productos %}
+                            <tr>
+                                <td class="border-b py-3 pl-3">{{ producto.indice }}.</td>
+                                <td class="border-b py-3 pl-2">{{ producto.descripcion }}</td>
+                                <td class="border-b py-3 pl-2 text-right">$ {{ producto.precio_unitario }} MXN</td>
+                                <td class="border-b py-3 pl-2 text-center">{{ producto.cantidad }}</td>
+                                <td class="border-b py-3 pl-2 text-center">$ {{ producto.descuento }} MXN</td>
+                                <td class="border-b py-3 pl-2 text-right">$ {{ producto.precio_unitario *
+                                    producto.cantidad
+                                    }} MXN</td>
+                                <td class="border-b py-3 pl-2 pr-3 text-right">$ {{ (producto.precio_unitario *
+                                    producto.cantidad) - producto.descuento }} MXN</td>
+                            </tr>
+                            {% endfor %}
+                            <!-- Totales -->
+                            <tr>
+                                <td colspan="7">
+                                    <table class="w-full border-collapse border-spacing-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="w-full"></td>
+                                                <!-- Detalles finales -->
+                                                <td>
+                                                    <table class="w-full border-collapse border-spacing-0">
+                                                        <tbody>
+                                                            <!-- Subtotal -->
+                                                            <tr>
+                                                                <td class="border-b p-3">
+                                                                    <div class="whitespace-nowrap text-slate-400">
+                                                                        Subtotal :
+                                                                    </div>
+                                                                </td>
+                                                                <td class="border-b p-3 text-right">
+                                                                    <div class="whitespace-nowrap font-bold text-main">
+                                                                        $ {{ total_sin_descuento }} MXN</div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- Descuento -->
+                                                            <tr>
+                                                                <td class="p-3">
+                                                                    <div class="whitespace-nowrap text-slate-400">
+                                                                        Descuento:
+                                                                    </div>
+                                                                </td>
+                                                                <td class="p-3 text-right">
+                                                                    <div class="whitespace-nowrap font-bold text-main">
+                                                                        $ {{ descuento_total }} MXN</div>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- Total -->
+                                                            <tr>
+                                                                <td class="bg-main p-3">
+                                                                    <div class="whitespace-nowrap font-bold text-white">
+                                                                        Total:</div>
+                                                                </td>
+                                                                <td class="bg-main p-3 text-right">
+                                                                    <div class="whitespace-nowrap font-bold text-white">
+                                                                        $ {{ total }} MXN</div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Detalles de pago -->
+                    <div class="text-sm text-neutral-700">
+                        <p class="text-main font-bold">Detalles De Pago:</p>
+                        <p><strong>Forma De Pago:</strong> {{ datos_recibidos.forma_pago }}</p>
+                        <p><strong>Referencia De Pago:</strong> {{ datos_recibidos.referencia_pago }}</p>
+                    </div>
+
+                    <!-- Pie de página -->
+                    <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
+                        ¡Gracias por confiar en nosotros!
+                    </footer>
+
+                    <!-- Botón de impresión -->
+                    <div class="w-100 d-flex align-items-center justify-content-center">
+                        <a id="no-print" onclick="hide_no_print(); window.print(); unhide_no_print();" class="btn"
+                            style="background-color: #5c6ac4; color: white;">Imprimir</a>
+                        <a id="no-print-two" href="{{ url_for('index') }}" class="btn btn-primary ml-2">Regresar</a>
+                    </div>
+                </div>
+
+                <!-- Pie de página -->
+                <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
+                    ¡Gracias por confiar en nosotros!
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje de alerta -->
+    <div id="warning" class="text-center">
+        <div class="card w-75 mt-5 ml-auto mr-auto"
+            style="border-radius: 20px; box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.486)">
+            <h5 class="card-header">Dispositivo Incompatible</h5>
+            <div class="card-body">
+                <p class="card-text">Para visualizar el recibo o cotización, se recomienda utilizar un computador o
+                    tableta.</p>
+                <p class="card-text">Si lo prefieres, siempre puedes imprimir el contenido para verlo en su tamaño
+                    original.</p>
+                <a onclick="low_print(); window.print(); hide();" class="btn"
+                    style="background-color: #5c6ac4; color: white;">Imprimir</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para mostrar el mensaje de advertencia si el ancho de la pantalla es menor que 760px
+        function show_warning() {
+            if (window.innerWidth < 760) {
+                document.getElementById('warning').style.display = 'block';
+                document.getElementById('display').style.display = 'none';
+            } else {
+                document.getElementById('warning').style.display = 'none';
+                document.getElementById('display').style.display = 'block';
+            }
+        }
+
+        // Mostrar la advertencia al cargar la página
+        show_warning();
+
+        // Escuchar cambios en el tamaño de la ventana y volver a verificar si es necesario mostrar la advertencia
+        window.addEventListener('resize', show_warning);
+
+        function low_print() {
+            document.getElementById('warning').style.display = 'none';
+            document.getElementById('no-print').style.display = 'none';
+            document.getElementById('no-print-two').style.display = 'none';
+            document.getElementById('display').style.display = 'block';
+        }
+
+        function hide() {
+            document.getElementById('warning').style.display = 'block';
+            document.getElementById('no-print').style.display = 'block';
+            document.getElementById('no-print-two').style.display = 'block';
+            document.getElementById('display').style.display = 'none';
+        }
+
+        function hide_no_print() {
+            document.getElementById('no-print').style.display = 'none';
+            document.getElementById('no-print-two').style.display = 'none';
+        }
+
+        function unhide_no_print() {
+            document.getElementById('no-print').style.display = 'block';
+            document.getElementById('no-print-two').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

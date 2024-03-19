@@ -1,0 +1,175 @@
+<!-- app/templates/formulario.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación</title>
+    <!-- Enlaces a Bootstrap -->
+    <link rel="stylesheet" media="all" href="{{url_for('static', filename='css/index.css')}}" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="custom-container img-container">
+            <div class="text-center">
+                <i class="bi bi-receipt-cutoff" style="color: white; font-size: 50px;"></i>
+            </div>
+        </div>
+        <div class="custom-container p-3">
+            <h1 style="color: #5c6ac4;">Generación - Recibos y Cotizaciones</h1>
+        </div>
+        <div class="custom-container p-3">
+            <strong>
+                <h2 style="color: #5c6ac4;">Información Básica</h2>
+            </strong>
+            <hr>
+            <form method="post" action="{{ url_for('fulfill') }}">
+                <div class="form-group mb-3">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" class="form-control" id="fecha" name="fecha" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="recibe">Recibe:</label>
+                    <input type="text" class="form-control" id="recibe" name="recibe" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="recibido_de">Recibí de:</label>
+                    <input type="text" class="form-control" id="recibido_de" name="recibido_de" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="direccion">Dirección:</label>
+                    <input type="text" class="form-control" id="direccion" name="direccion">
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group mb-3">
+                            <label>Forma de pago:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="forma_pago" id="efectivo"
+                                    value="Efectivo" required>
+                                <label class="form-check-label" for="efectivo">Efectivo</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="forma_pago" id="transferencia"
+                                    value="Transferencia" required>
+                                <label class="form-check-label" for="transferencia">Transferencia</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group mb-3">
+                            <label>Referencia:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="referencia_pago" id="efectivo_ref"
+                                    value="Efectivo" required>
+                                <label class="form-check-label" for="efectivo_ref">Efectivo</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="referencia_pago"
+                                    id="transferencia_ref" value="Transferencia" required>
+                                <label class="form-check-label" for="transferencia_ref">Transferencia</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" name="action" value="quote"
+                    style="background-color: #5cc4b3; color: white;">Cotización</button>
+                <button type="submit" class="btn" name="action" value="receipt"
+                    style="background-color: #5c6ac4; color: white;">Recibo</button>
+            </form>
+        </div>
+        <div class="custom-container">
+            <!-- Subformulario de Productos -->
+            <strong>
+                <h2 style="color: #5c6ac4;">Servicios (Añadir)</h2>
+            </strong>
+            <hr>
+            <form id="producto-form" method="post" onsubmit="guardarDatosFormulario()"
+                action="{{ url_for('add_product') }}">
+                <div class="form-row">
+                    <div class="form-group mb-3">
+                        <label for="cantidad_producto">Cantidad:</label>
+                        <input type="number" class="form-control" id="cantidad_producto" name="cantidad_producto"
+                            value="0">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="descripcion_producto">Descripción:</label>
+                        <input type="text" class="form-control" id="descripcion_producto" name="descripcion_producto">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="medidas_producto">Medidas:</label>
+                        <input type="text" class="form-control" id="medidas_producto" name="medidas_producto">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="precio_unitario_producto">Precio Unitario:</label>
+                        <input type="number" class="form-control" id="precio_unitario_producto"
+                            name="precio_unitario_producto" value="0">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="descuento_producto">Descuento:</label>
+                        <input type="number" class="form-control" id="descuento_producto" name="descuento_producto"
+                            value="0">
+                    </div>
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-success" name="accion" value="agregar">Agregar
+                            Servicio</button>
+                        <button type="submit" class="btn btn-danger" name="accion" value="limpiar">Limpiar
+                            Servicio</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="custom-container mb-2" style="overflow-x: scroll;">
+            <strong>
+                <h2 style="color: #5c6ac4;">Servicios</h2>
+            </strong>
+            <hr>
+            <table class="table text-center">
+                <!-- Tabla para mostrar los productos -->
+                <thead>
+                    <tr>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Medidas</th>
+                        <th>Precio Unitario</th>
+                        <th>Descuento</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="productos-body">
+                    <!-- Filas de la tabla para productos -->
+                    {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.cantidad }}</td>
+                        <td>{{ producto.descripcion }}</td>
+                        <td>{{ producto.medidas }}</td>
+                        <td>{{ producto.precio_unitario }}</td>
+                        <td>{{ producto.descuento }}</td>
+                        <td>{{ producto.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    <!-- Agregar enlaces a los scripts de Bootstrap y jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
