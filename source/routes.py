@@ -59,6 +59,18 @@ def add_product():
         # Redirect to the index page after clearing the list
         return redirect(url_for('index'))
 
+# Route for deleting a product
+@app.route('/delete_product/<int:indice>', methods=['POST'])
+def delete_product(indice):
+    # Find the product with the specified index in the productos list and remove it
+    for producto in productos:
+        if producto['indice'] == indice:
+            productos.remove(producto)
+            break
+
+    # Redirect to the index page after deleting the product
+    return redirect(url_for('index'))
+
 # Route for fulfilling form submissions
 @app.route('/fulfill', methods=['POST'])
 def fulfill():
