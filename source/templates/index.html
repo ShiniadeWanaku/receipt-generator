@@ -23,7 +23,91 @@
         <div class="custom-container p-3">
             <h1 style="color: #5c6ac4;">Generación - Recibos y Cotizaciones</h1>
         </div>
-        <div class="custom-container p-3">
+        <div class="custom-container">
+            <!-- Subformulario de Productos -->
+            <strong>
+                <h2 style="color: #5c6ac4;">Servicios (Añadir)</h2>
+            </strong>
+            <hr>
+            <form id="producto-form" method="post" onsubmit="guardarDatosFormulario()"
+                action="{{ url_for('add_product') }}">
+                <div class="form-row">
+                    <div class="form-group mb-3">
+                        <label for="cantidad_producto">Cantidad:</label>
+                        <input type="number" class="form-control" id="cantidad_producto" name="cantidad_producto"
+                            value="0">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="descripcion_producto">Descripción:</label>
+                        <input type="text" class="form-control" id="descripcion_producto" name="descripcion_producto">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="medidas_producto">Medidas:</label>
+                        <input type="text" class="form-control" id="medidas_producto" name="medidas_producto">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="precio_unitario_producto">Precio Unitario:</label>
+                        <input type="number" class="form-control" id="precio_unitario_producto"
+                            name="precio_unitario_producto" value="0">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="descuento_producto">Descuento:</label>
+                        <input type="number" class="form-control" id="descuento_producto" name="descuento_producto"
+                            value="0">
+                    </div>
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-success" name="accion" value="agregar">Agregar
+                            Servicio</button>
+                        <button type="submit" class="btn btn-danger" name="accion" value="limpiar">Limpiar
+                            Servicio</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="custom-container mb-2" style="overflow-x: scroll;">
+            <strong>
+                <h2 style="color: #5c6ac4;">Servicios</h2>
+            </strong>
+            <hr>
+            <table class="table">
+                <!-- Tabla para mostrar los productos -->
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Medidas</th>
+                        <th>Precio Unitario</th>
+                        <th>Descuento</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="productos-body">
+                    <!-- Filas de la tabla para productos -->
+                    {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.indice }}</td>
+                        <td>{{ producto.cantidad }}</td>
+                        <td>{{ producto.descripcion }}</td>
+                        <td>{{ producto.medidas }}</td>
+                        <td>{{ producto.precio_unitario }}</td>
+                        <td>{{ producto.descuento }}</td>
+                        <td>{{ producto.total }}</td>
+                        <form action="/delete_product/{{ producto.indice }}" method="post">
+                            <td>
+                                <button class="btn btn-danger">Borrar</button>
+                            </td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="custom-container p-3 mt-4 mb-5">
             <strong>
                 <h2 style="color: #5c6ac4;">Información Básica</h2>
             </strong>
@@ -88,80 +172,7 @@
                     style="background-color: #5c6ac4; color: white;">Recibo</button>
             </form>
         </div>
-        <div class="custom-container">
-            <!-- Subformulario de Productos -->
-            <strong>
-                <h2 style="color: #5c6ac4;">Servicios (Añadir)</h2>
-            </strong>
-            <hr>
-            <form id="producto-form" method="post" onsubmit="guardarDatosFormulario()"
-                action="{{ url_for('add_product') }}">
-                <div class="form-row">
-                    <div class="form-group mb-3">
-                        <label for="cantidad_producto">Cantidad:</label>
-                        <input type="number" class="form-control" id="cantidad_producto" name="cantidad_producto"
-                            value="0">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="descripcion_producto">Descripción:</label>
-                        <input type="text" class="form-control" id="descripcion_producto" name="descripcion_producto">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="medidas_producto">Medidas:</label>
-                        <input type="text" class="form-control" id="medidas_producto" name="medidas_producto">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="precio_unitario_producto">Precio Unitario:</label>
-                        <input type="number" class="form-control" id="precio_unitario_producto"
-                            name="precio_unitario_producto" value="0">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="descuento_producto">Descuento:</label>
-                        <input type="number" class="form-control" id="descuento_producto" name="descuento_producto"
-                            value="0">
-                    </div>
-                    <div class="form-group mb-3">
-                        <button type="submit" class="btn btn-success" name="accion" value="agregar">Agregar
-                            Servicio</button>
-                        <button type="submit" class="btn btn-danger" name="accion" value="limpiar">Limpiar
-                            Servicio</button>
-                    </div>
-                </div>
-            </form>
 
-        </div>
-        <div class="custom-container mb-2" style="overflow-x: scroll;">
-            <strong>
-                <h2 style="color: #5c6ac4;">Servicios</h2>
-            </strong>
-            <hr>
-            <table class="table text-center">
-                <!-- Tabla para mostrar los productos -->
-                <thead>
-                    <tr>
-                        <th>Cantidad</th>
-                        <th>Descripción</th>
-                        <th>Medidas</th>
-                        <th>Precio Unitario</th>
-                        <th>Descuento</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody id="productos-body">
-                    <!-- Filas de la tabla para productos -->
-                    {% for producto in productos %}
-                    <tr>
-                        <td>{{ producto.cantidad }}</td>
-                        <td>{{ producto.descripcion }}</td>
-                        <td>{{ producto.medidas }}</td>
-                        <td>{{ producto.precio_unitario }}</td>
-                        <td>{{ producto.descuento }}</td>
-                        <td>{{ producto.total }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
     </div>
     </div>
 
