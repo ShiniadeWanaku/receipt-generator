@@ -229,7 +229,9 @@
 
                     <!-- Botón de impresión -->
                     <div class="w-100 d-flex align-items-center justify-content-center">
-                        <a id="no-print" onclick="hide_no_print(); window.print(); unhide_no_print();" class="btn"
+                        <a id="no-print" onclick="hide_no_print(); window.print(); setTimeout(() => {
+                            unhide_no_print();
+                        }, 10000);" class="btn"
                             style="background-color: #5c6ac4; color: white;">Imprimir</a>
                         <a id="no-print-two" href="{{ url_for('index') }}" class="btn btn-primary ml-2">Regresar</a>
                     </div>
@@ -253,7 +255,9 @@
                     tableta.</p>
                 <p class="card-text">Si lo prefieres, siempre puedes imprimir el contenido para verlo en su tamaño
                     original.</p>
-                <a onclick="low_print(); window.print(); hide();" class="btn"
+                <a onclick="low_print(); window.print(); setTimeout(() => {
+                    hide();
+                }, 10000);" class="btn"
                     style="background-color: #5c6ac4; color: white;">Imprimir</a>
             </div>
         </div>
